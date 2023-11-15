@@ -7,6 +7,7 @@ import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
 import at.petrak.hexcasting.api.utils.asTranslatedComponent
+import at.petrak.hexcasting.common.lib.hex.HexIotaTypes.*
 import com.mojang.datafixers.util.Either
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerPlayer
@@ -24,8 +25,8 @@ import kotlin.math.roundToLong
 
 fun List<Iota>.getDouble(idx: Int, argc: Int = 0): Double {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        return x.double
+    if (x.castableTo(DOUBLE)) {
+        return x.castTo(DOUBLE).double
     } else {
         // TODO: I'm not sure this calculation is correct
         throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "double")
@@ -34,8 +35,8 @@ fun List<Iota>.getDouble(idx: Int, argc: Int = 0): Double {
 
 fun List<Iota>.getEntity(idx: Int, argc: Int = 0): Entity {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is EntityIota) {
-        return x.entity
+    if (x.castableTo(ENTITY)) {
+        return x.castTo(ENTITY).entity
     } else {
         throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "entity")
     }
@@ -43,8 +44,8 @@ fun List<Iota>.getEntity(idx: Int, argc: Int = 0): Entity {
 
 fun List<Iota>.getList(idx: Int, argc: Int = 0): SpellList {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is ListIota) {
-        return x.list
+    if (x.castableTo(LIST)) {
+        return x.castTo(LIST).list
     } else {
         throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "list")
     }
@@ -52,8 +53,8 @@ fun List<Iota>.getList(idx: Int, argc: Int = 0): SpellList {
 
 fun List<Iota>.getPattern(idx: Int, argc: Int = 0): HexPattern {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is PatternIota) {
-        return x.pattern
+    if (x.castableTo(PATTERN)) {
+        return x.castTo(PATTERN).pattern
     } else {
         throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "pattern")
     }
@@ -61,8 +62,8 @@ fun List<Iota>.getPattern(idx: Int, argc: Int = 0): HexPattern {
 
 fun List<Iota>.getVec3(idx: Int, argc: Int = 0): Vec3 {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is Vec3Iota) {
-        return x.vec3
+    if (x.castableTo(VEC3)) {
+        return x.castTo(VEC3).vec3
     } else {
         throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "vector")
     }
@@ -70,8 +71,8 @@ fun List<Iota>.getVec3(idx: Int, argc: Int = 0): Vec3 {
 
 fun List<Iota>.getBool(idx: Int, argc: Int = 0): Boolean {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is BooleanIota) {
-        return x.bool
+    if (x.castableTo(BOOLEAN)) {
+        return x.castTo(BOOLEAN).bool
     } else {
         throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "boolean")
     }
@@ -81,8 +82,8 @@ fun List<Iota>.getBool(idx: Int, argc: Int = 0): Boolean {
 
 fun List<Iota>.getItemEntity(idx: Int, argc: Int = 0): ItemEntity {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is EntityIota) {
-        val e = x.entity
+    if (x.castableTo(ENTITY)) {
+        val e = x.castTo(ENTITY).entity
         if (e is ItemEntity)
             return e
     }
@@ -91,8 +92,8 @@ fun List<Iota>.getItemEntity(idx: Int, argc: Int = 0): ItemEntity {
 
 fun List<Iota>.getPlayer(idx: Int, argc: Int = 0): ServerPlayer {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is EntityIota) {
-        val e = x.entity
+    if (x.castableTo(ENTITY)) {
+        val e = x.castTo(ENTITY).entity
         if (e is ServerPlayer)
             return e
     }
@@ -101,8 +102,8 @@ fun List<Iota>.getPlayer(idx: Int, argc: Int = 0): ServerPlayer {
 
 fun List<Iota>.getMob(idx: Int, argc: Int = 0): Mob {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is EntityIota) {
-        val e = x.entity
+    if (x.castableTo(ENTITY)) {
+        val e = x.castTo(ENTITY).entity
         if (e is Mob)
             return e
     }
@@ -111,8 +112,8 @@ fun List<Iota>.getMob(idx: Int, argc: Int = 0): Mob {
 
 fun List<Iota>.getLivingEntityButNotArmorStand(idx: Int, argc: Int = 0): LivingEntity {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is EntityIota) {
-        val e = x.entity
+    if (x.castableTo(ENTITY)) {
+        val e = x.castTo(ENTITY).entity
         if (e is LivingEntity && e !is ArmorStand)
             return e
     }
@@ -121,8 +122,8 @@ fun List<Iota>.getLivingEntityButNotArmorStand(idx: Int, argc: Int = 0): LivingE
 
 fun List<Iota>.getPositiveDouble(idx: Int, argc: Int = 0): Double {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         if (0 <= double) {
             return double
         }
@@ -132,8 +133,8 @@ fun List<Iota>.getPositiveDouble(idx: Int, argc: Int = 0): Double {
 
 fun List<Iota>.getPositiveDoubleUnder(idx: Int, max: Double, argc: Int = 0): Double {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         if (0.0 <= double && double < max) {
             return double
         }
@@ -143,8 +144,8 @@ fun List<Iota>.getPositiveDoubleUnder(idx: Int, max: Double, argc: Int = 0): Dou
 
 fun List<Iota>.getPositiveDoubleUnderInclusive(idx: Int, max: Double, argc: Int = 0): Double {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         if (double in 0.0..max) {
             return double
         }
@@ -154,8 +155,8 @@ fun List<Iota>.getPositiveDoubleUnderInclusive(idx: Int, max: Double, argc: Int 
 
 fun List<Iota>.getDoubleBetween(idx: Int, min: Double, max: Double, argc: Int = 0): Double {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         if (double in min..max) {
             return double
         }
@@ -165,8 +166,8 @@ fun List<Iota>.getDoubleBetween(idx: Int, min: Double, max: Double, argc: Int = 
 
 fun List<Iota>.getInt(idx: Int, argc: Int = 0): Int {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         val rounded = double.roundToInt()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE) {
             return rounded
@@ -177,8 +178,8 @@ fun List<Iota>.getInt(idx: Int, argc: Int = 0): Int {
 
 fun List<Iota>.getLong(idx: Int, argc: Int = 0): Long {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         val rounded = double.roundToLong()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE) {
             return rounded
@@ -189,8 +190,8 @@ fun List<Iota>.getLong(idx: Int, argc: Int = 0): Long {
 
 fun List<Iota>.getPositiveInt(idx: Int, argc: Int = 0): Int {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         val rounded = double.roundToInt()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE && rounded >= 0) {
             return rounded
@@ -201,8 +202,8 @@ fun List<Iota>.getPositiveInt(idx: Int, argc: Int = 0): Int {
 
 fun List<Iota>.getPositiveIntUnder(idx: Int, max: Int, argc: Int = 0): Int {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         val rounded = double.roundToInt()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE && rounded in 0 until max) {
             return rounded
@@ -213,8 +214,8 @@ fun List<Iota>.getPositiveIntUnder(idx: Int, max: Int, argc: Int = 0): Int {
 
 fun List<Iota>.getPositiveIntUnderInclusive(idx: Int, max: Int, argc: Int = 0): Int {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         val rounded = double.roundToInt()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE && rounded in 0..max) {
             return rounded
@@ -225,8 +226,8 @@ fun List<Iota>.getPositiveIntUnderInclusive(idx: Int, max: Int, argc: Int = 0): 
 
 fun List<Iota>.getIntBetween(idx: Int, min: Int, max: Int, argc: Int = 0): Int {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is DoubleIota) {
-        val double = x.double
+    if (x.castableTo(DOUBLE)) {
+        val double = x.castTo(DOUBLE).double
         val rounded = double.roundToInt()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE && rounded in min..max) {
             return rounded
@@ -237,8 +238,8 @@ fun List<Iota>.getIntBetween(idx: Int, min: Int, max: Int, argc: Int = 0): Int {
 
 fun List<Iota>.getBlockPos(idx: Int, argc: Int = 0): BlockPos {
     val x = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (x is Vec3Iota) {
-        return BlockPos.containing(x.vec3)
+    if (x.castableTo(VEC3)) {
+        return BlockPos.containing(x.castTo(VEC3).vec3)
     }
 
     throw MishapInvalidIota.ofType(x, if (argc == 0) idx else argc - (idx + 1), "vector")
@@ -246,44 +247,42 @@ fun List<Iota>.getBlockPos(idx: Int, argc: Int = 0): BlockPos {
 
 fun List<Iota>.getNumOrVec(idx: Int, argc: Int = 0): Either<Double, Vec3> {
     val datum = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    return when (datum) {
-        is DoubleIota -> Either.left(datum.double)
-        is Vec3Iota -> Either.right(datum.vec3)
-        else -> throw MishapInvalidIota.of(
-            datum,
-            if (argc == 0) idx else argc - (idx + 1),
-            "numvec"
-        )
+    if (datum.castableTo(DOUBLE)) {
+        return Either.left(datum.castTo(DOUBLE).double)
+    } else if (datum.castableTo(DOUBLE)) {
+        return Either.right(datum.castTo(VEC3).vec3)
     }
+    throw MishapInvalidIota.of(datum, if (argc == 0) idx else argc - (idx + 1), "numvec")
 }
 
 fun List<Iota>.getLongOrList(idx: Int, argc: Int = 0): Either<Long, SpellList> {
     val datum = this.getOrElse(idx) { throw MishapNotEnoughArgs(idx + 1, this.size) }
-    if (datum is DoubleIota) {
-        val double = datum.double
+    if (datum.castableTo(DOUBLE)) {
+        val double = datum.castTo(DOUBLE).double
         val rounded = double.roundToLong()
         if (abs(double - rounded) <= DoubleIota.TOLERANCE) {
             return Either.left(rounded)
         }
-    } else if (datum is ListIota) {
-        return Either.right(datum.list)
+    } else if (datum.castableTo(LIST)) {
+        return Either.right(datum.castTo(LIST).list)
     }
     throw MishapInvalidIota.of(
-        datum,
-        if (argc == 0) idx else argc - (idx + 1),
-        "numlist"
+            datum,
+            if (argc == 0) idx else argc - (idx + 1),
+            "numlist"
     )
 }
 
 fun evaluatable(datum: Iota, reverseIdx: Int): Either<Iota, SpellList> =
-    when (datum) {
-        is ListIota -> Either.right(datum.list)
-        else -> if (datum.executable()) Either.left(datum) else throw MishapInvalidIota(
-            datum,
-            reverseIdx,
-            "hexcasting.mishap.invalid_value.evaluatable".asTranslatedComponent
+        if (datum.castableTo(LIST)) {
+            Either.right(datum.castTo(LIST).list)
+        } else if (datum.executable()) {
+            Either.left(datum)
+        } else throw MishapInvalidIota(
+                datum,
+                reverseIdx,
+                "hexcasting.mishap.invalid_value.evaluatable".asTranslatedComponent
         )
-    }
 
 fun Iota?.orNull() = this ?: NullIota()
 
@@ -291,10 +290,10 @@ fun Iota?.orNull() = this ?: NullIota()
 // there should probably be some way to abstract function application over lists, vecs, and numbers,
 // and i bet it's fucking monads
 fun aplKinnie(operatee: Either<Double, Vec3>, fn: DoubleUnaryOperator): Iota =
-    operatee.map(
-        { num -> DoubleIota(fn.applyAsDouble(num)) },
-        { vec -> Vec3Iota(Vec3(fn.applyAsDouble(vec.x), fn.applyAsDouble(vec.y), fn.applyAsDouble(vec.z))) }
-    )
+        operatee.map(
+                { num -> DoubleIota(fn.applyAsDouble(num)) },
+                { vec -> Vec3Iota(Vec3(fn.applyAsDouble(vec.x), fn.applyAsDouble(vec.y), fn.applyAsDouble(vec.z))) }
+        )
 
 inline val Boolean.asActionResult get() = listOf(BooleanIota(this))
 inline val Double.asActionResult get() = listOf(DoubleIota(this))

@@ -24,7 +24,7 @@ public class OperatorUnpack extends Operator {
 	@Override
 	public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) {
 		var it = iotas.iterator();
-		var vec = downcast(it.next(), VEC3).getVec3();
+		var vec = it.next().castTo(VEC3).getVec3();
 		return List.of(new DoubleIota(vec.x), new DoubleIota(vec.y), new DoubleIota(vec.z));
 	}
 }

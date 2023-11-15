@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static at.petrak.hexcasting.api.casting.arithmetic.operator.Operator.downcast;
 import static at.petrak.hexcasting.common.lib.hex.HexIotaTypes.*;
 
 public enum Vec3Arithmetic implements Arithmetic {
@@ -77,10 +76,10 @@ public enum Vec3Arithmetic implements Arithmetic {
 		throw new InvalidOperatorException(pattern + " is not a valid operator in Arithmetic " + this + ".");
 	}
 	public static OperatorUnary make1(Function<Vec3, Vec3> op) {
-		return new OperatorUnary(ACCEPTS, i -> new Vec3Iota(op.apply(downcast(i, VEC3).getVec3())));
+		return new OperatorUnary(ACCEPTS, i -> new Vec3Iota(op.apply(i.castTo(VEC3).getVec3())));
 	}
 	public static OperatorUnary make1Double(Function<Vec3, Double> op) {
-		return new OperatorUnary(ACCEPTS, i -> new DoubleIota(op.apply(downcast(i, VEC3).getVec3())));
+		return new OperatorUnary(ACCEPTS, i -> new DoubleIota(op.apply(i.castTo(VEC3).getVec3())));
 	}
 	public static OperatorVec3Delegating make2Fallback(HexPattern pattern) {
 		return new OperatorVec3Delegating(null, pattern);

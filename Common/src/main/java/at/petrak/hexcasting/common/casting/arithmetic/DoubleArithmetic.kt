@@ -15,10 +15,10 @@ import at.petrak.hexcasting.api.casting.mishaps.MishapDivideByZero
 import at.petrak.hexcasting.common.casting.arithmetic.operator.OperatorLog
 import at.petrak.hexcasting.common.casting.arithmetic.operator.asDoubleBetween
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
+import at.petrak.hexcasting.common.lib.hex.HexIotaTypes.*
 import java.util.function.DoubleBinaryOperator
 import java.util.function.DoubleUnaryOperator
 import kotlin.math.*
-
 object DoubleArithmetic : Arithmetic {
     @JvmField
     val OPS = listOf(
@@ -74,8 +74,8 @@ object DoubleArithmetic : Arithmetic {
     }
 
     fun make1(op: DoubleUnaryOperator) = OperatorUnary(ACCEPTS)
-        { i: Iota -> DoubleIota(op.applyAsDouble(Operator.downcast(i, HexIotaTypes.DOUBLE).double)) }
+        { i: Iota -> DoubleIota(op.applyAsDouble(i.castTo(DOUBLE).double)) }
 
     fun make2(op: DoubleBinaryOperator) = OperatorBinary(ACCEPTS)
-        { i: Iota, j: Iota -> DoubleIota(op.applyAsDouble(Operator.downcast(i, HexIotaTypes.DOUBLE).double, Operator.downcast(j, HexIotaTypes.DOUBLE).double)) }
+        { i: Iota, j: Iota -> DoubleIota(op.applyAsDouble(i.castTo(DOUBLE).double, j.castTo(DOUBLE).double)) }
 }

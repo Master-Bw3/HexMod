@@ -24,9 +24,9 @@ public class OperatorPack extends Operator {
 	public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) {
 		var it = iotas.iterator();
 		return List.of(new Vec3Iota(new Vec3(
-			downcast(it.next(), HexIotaTypes.DOUBLE).getDouble(),
-			downcast(it.next(), HexIotaTypes.DOUBLE).getDouble(),
-			downcast(it.next(), HexIotaTypes.DOUBLE).getDouble()
+			it.next().castTo(HexIotaTypes.DOUBLE).getDouble(),
+			it.next().castTo(HexIotaTypes.DOUBLE).getDouble(),
+			it.next().castTo(HexIotaTypes.DOUBLE).getDouble()
 		)));
 	}
 }

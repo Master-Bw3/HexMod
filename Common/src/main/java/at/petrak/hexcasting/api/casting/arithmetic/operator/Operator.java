@@ -43,13 +43,4 @@ public abstract class Operator {
 	 */
 	public abstract @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) throws Mishap;
 
-	/**
-	 * A helper method to take an iota that you know is of iotaType and returning it as an iota of that type.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Iota> T downcast(Iota iota, IotaType<T> iotaType) {
-		if (iota.getType() != iotaType)
-			throw new IllegalStateException("Attempting to downcast " + iota + " to type: " + iotaType);
-		return (T) iota;
-	}
 }

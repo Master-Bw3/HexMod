@@ -12,8 +12,8 @@ import kotlin.math.roundToInt
 object OperatorIndex : Operator(2, IotaMultiPredicate.pair(IotaPredicate.ofType(LIST), IotaPredicate.ofType(DOUBLE))) {
     override fun apply(iotas: Iterable<Iota>, env: CastingEnvironment): Iterable<Iota> {
         val it = iotas.iterator()
-        val list = downcast(it.next(), LIST).list.toMutableList()
-        val index = downcast(it.next(), DOUBLE).double
+        val list = it.next().castTo(LIST).list.toMutableList()
+        val index = it.next().castTo(DOUBLE).double
         val x = list.getOrElse(index.roundToInt()) { NullIota() }
         return listOf(x)
     }

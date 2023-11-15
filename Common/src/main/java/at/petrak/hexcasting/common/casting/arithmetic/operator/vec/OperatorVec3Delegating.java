@@ -41,13 +41,13 @@ public class OperatorVec3Delegating extends Operator {
 			if (op != null && left instanceof Vec3Iota lh && right instanceof Vec3Iota rh) {
 				return List.of(op.apply(lh.getVec3(), rh.getVec3()));
 			}
-			var lh = left instanceof Vec3Iota l ? l.getVec3() : triplicate(downcast(left, DOUBLE).getDouble());
-			var rh = right instanceof Vec3Iota r ? r.getVec3() : triplicate(downcast(right, DOUBLE).getDouble());
+			var lh = left instanceof Vec3Iota l ? l.getVec3() : triplicate(left.castTo(DOUBLE).getDouble());
+			var rh = right instanceof Vec3Iota r ? r.getVec3() : triplicate(right.castTo(DOUBLE).getDouble());
 			return new TripleIterable<>(
 					fb.apply(new IterPair<>(new DoubleIota(lh.x()), new DoubleIota(rh.x())), env),
 					fb.apply(new IterPair<>(new DoubleIota(lh.y()), new DoubleIota(rh.y())), env),
 					fb.apply(new IterPair<>(new DoubleIota(lh.z()), new DoubleIota(rh.z())), env),
-					(x, y, z) -> new Vec3Iota(new Vec3(downcast(x, DOUBLE).getDouble(), downcast(y, DOUBLE).getDouble(), downcast(z, DOUBLE).getDouble()))
+					(x, y, z) -> new Vec3Iota(new Vec3(x.castTo(DOUBLE).getDouble(), x.castTo(DOUBLE).getDouble(), z.castTo(DOUBLE).getDouble()))
 			);
 		} catch (MishapDivideByZero e) {
 			throw MishapDivideByZero.of(left, right, e.getSuffix());
