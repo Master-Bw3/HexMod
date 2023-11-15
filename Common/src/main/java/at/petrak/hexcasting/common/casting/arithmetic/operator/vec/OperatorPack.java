@@ -14,19 +14,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class OperatorPack extends Operator {
-	private OperatorPack() {
-		super(3, IotaMultiPredicate.all(IotaPredicate.ofType(HexIotaTypes.DOUBLE)));
-	}
+    private OperatorPack() {
+        super(3, IotaMultiPredicate.all(IotaPredicate.ofType(HexIotaTypes.DOUBLE)));
+    }
 
-	public static OperatorPack INSTANCE = new OperatorPack();
+    public static OperatorPack INSTANCE = new OperatorPack();
 
-	@Override
-	public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) {
-		var it = iotas.iterator();
-		return List.of(new Vec3Iota(new Vec3(
-			it.next().castTo(HexIotaTypes.DOUBLE).getDouble(),
-			it.next().castTo(HexIotaTypes.DOUBLE).getDouble(),
-			it.next().castTo(HexIotaTypes.DOUBLE).getDouble()
-		)));
-	}
+    @Override
+    public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) {
+        var it = iotas.iterator();
+        return List.of(new Vec3Iota(new Vec3(
+                it.next().castTo(HexIotaTypes.DOUBLE).getDouble(),
+                it.next().castTo(HexIotaTypes.DOUBLE).getDouble(),
+                it.next().castTo(HexIotaTypes.DOUBLE).getDouble()
+        )));
+    }
 }

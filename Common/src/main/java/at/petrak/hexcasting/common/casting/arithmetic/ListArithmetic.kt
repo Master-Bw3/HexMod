@@ -45,19 +45,36 @@ object ListArithmetic : Arithmetic {
             APPEND -> OperatorAppend
             UNAPPEND -> OperatorUnappend
             ADD -> make2 { list0, list1 -> list0 + list1 }
-            ABS -> OperatorUnary(all(IotaPredicate.ofType(LIST))) { iota: Iota -> DoubleIota(iota.castTo(LIST).list.size().toDouble()) }
-            REV -> OperatorUnary(all(IotaPredicate.ofType(LIST))) { iota: Iota -> ListIota(iota.castTo(LIST).list.toList().asReversed()) }
+            ABS -> OperatorUnary(all(IotaPredicate.ofType(LIST))) { iota: Iota ->
+                DoubleIota(
+                    iota.castTo(LIST).list.size().toDouble()
+                )
+            }
+
+            REV -> OperatorUnary(all(IotaPredicate.ofType(LIST))) { iota: Iota ->
+                ListIota(
+                    iota.castTo(LIST).list.toList().asReversed()
+                )
+            }
+
             INDEX_OF -> OperatorIndexOf
             REMOVE -> OperatorRemove
             REPLACE -> OperatorReplace
-            CONS -> OperatorBinary(pair(IotaPredicate.ofType(LIST), IotaPredicate.TRUE)) { list, iota -> ListIota(SpellList.LPair(iota, list.castTo(LIST).list)) }
+            CONS -> OperatorBinary(pair(IotaPredicate.ofType(LIST), IotaPredicate.TRUE)) { list, iota ->
+                ListIota(
+                    SpellList.LPair(iota, list.castTo(LIST).list)
+                )
+            }
+
             UNCONS -> OperatorUnCons
             else -> throw InvalidOperatorException("$pattern is not a valid operator in Arithmetic $this.")
         }
     }
 
     private fun make2(op: BinaryOperator<List<Iota>>): OperatorBinary = OperatorBinary(all(IotaPredicate.ofType(LIST)))
-    { i: Iota, j: Iota -> ListIota(
+    { i: Iota, j: Iota ->
+        ListIota(
             op.apply(i.castTo(LIST).list.toList(), j.castTo(LIST).list.toList())
-    ) }
+        )
+    }
 }

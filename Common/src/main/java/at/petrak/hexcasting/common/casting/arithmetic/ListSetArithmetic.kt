@@ -30,14 +30,26 @@ object ListSetArithmetic : Arithmetic {
     override fun getOperator(pattern: HexPattern): Operator = when (pattern) {
         AND -> make2 { list0, list1 -> list0.filter { x -> list1.any { Iota.tolerates(x, it) } } }
         OR -> make2 { list0, list1 -> list0 + list1.filter { x -> list0.none { Iota.tolerates(x, it) } } }
-        XOR -> make2 { list0, list1 -> list0.filter { x0 -> list1.none {Iota.tolerates(x0, it) } } + list1.filter { x1 -> list0.none { Iota.tolerates(x1, it) } } }
+        XOR -> make2 { list0, list1 ->
+            list0.filter { x0 ->
+                list1.none {
+                    Iota.tolerates(
+                        x0,
+                        it
+                    )
+                }
+            } + list1.filter { x1 -> list0.none { Iota.tolerates(x1, it) } }
+        }
+
         UNIQUE -> OperatorUnique
         else -> throw InvalidOperatorException("$pattern is not a valid operator in Arithmetic $this.")
     }
 
 
     private fun make2(op: BinaryOperator<List<Iota>>): OperatorBinary = OperatorBinary(all(IotaPredicate.ofType(LIST)))
-    { i: Iota, j: Iota -> ListIota(
+    { i: Iota, j: Iota ->
+        ListIota(
             op.apply(i.castTo(LIST).list.toList(), j.castTo(LIST).list.toList())
-        ) }
+        )
+    }
 }

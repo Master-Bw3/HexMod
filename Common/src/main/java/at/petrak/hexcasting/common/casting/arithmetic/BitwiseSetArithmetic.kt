@@ -35,12 +35,15 @@ object BitwiseSetArithmetic : Arithmetic {
     }
 
     private fun make1(op: LongUnaryOperator): OperatorUnary = OperatorUnary(DoubleArithmetic.ACCEPTS)
-        { i: Iota -> DoubleIota(op.applyAsLong(i.castTo(DOUBLE).double.roundToLong()).toDouble()) }
+    { i: Iota -> DoubleIota(op.applyAsLong(i.castTo(DOUBLE).double.roundToLong()).toDouble()) }
 
     private fun make2(op: LongBinaryOperator): OperatorBinary = OperatorBinary(DoubleArithmetic.ACCEPTS)
-        { i: Iota, j: Iota -> DoubleIota(
-                op.applyAsLong(
-                    i.castTo(DOUBLE).double.roundToLong(),
-                    j.castTo(DOUBLE).double.roundToLong()
-                ).toDouble()) }
+    { i: Iota, j: Iota ->
+        DoubleIota(
+            op.applyAsLong(
+                i.castTo(DOUBLE).double.roundToLong(),
+                j.castTo(DOUBLE).double.roundToLong()
+            ).toDouble()
+        )
+    }
 }

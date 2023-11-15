@@ -15,16 +15,16 @@ import java.util.List;
 import static at.petrak.hexcasting.common.lib.hex.HexIotaTypes.VEC3;
 
 public class OperatorUnpack extends Operator {
-	private OperatorUnpack() {
-		super(1, IotaMultiPredicate.all(IotaPredicate.ofType(HexIotaTypes.DOUBLE)));
-	}
+    private OperatorUnpack() {
+        super(1, IotaMultiPredicate.all(IotaPredicate.ofType(HexIotaTypes.DOUBLE)));
+    }
 
-	public static OperatorUnpack INSTANCE = new OperatorUnpack();
+    public static OperatorUnpack INSTANCE = new OperatorUnpack();
 
-	@Override
-	public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) {
-		var it = iotas.iterator();
-		var vec = it.next().castTo(VEC3).getVec3();
-		return List.of(new DoubleIota(vec.x), new DoubleIota(vec.y), new DoubleIota(vec.z));
-	}
+    @Override
+    public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) {
+        var it = iotas.iterator();
+        var vec = it.next().castTo(VEC3).getVec3();
+        return List.of(new DoubleIota(vec.x), new DoubleIota(vec.y), new DoubleIota(vec.z));
+    }
 }

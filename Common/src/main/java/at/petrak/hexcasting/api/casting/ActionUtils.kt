@@ -267,22 +267,22 @@ fun List<Iota>.getLongOrList(idx: Int, argc: Int = 0): Either<Long, SpellList> {
         return Either.right(datum.castTo(LIST).list)
     }
     throw MishapInvalidIota.of(
-            datum,
-            if (argc == 0) idx else argc - (idx + 1),
-            "numlist"
+        datum,
+        if (argc == 0) idx else argc - (idx + 1),
+        "numlist"
     )
 }
 
 fun evaluatable(datum: Iota, reverseIdx: Int): Either<Iota, SpellList> =
-        if (datum.isCastableTo(LIST)) {
-            Either.right(datum.castTo(LIST).list)
-        } else if (datum.executable()) {
-            Either.left(datum)
-        } else throw MishapInvalidIota(
-                datum,
-                reverseIdx,
-                "hexcasting.mishap.invalid_value.evaluatable".asTranslatedComponent
-        )
+    if (datum.isCastableTo(LIST)) {
+        Either.right(datum.castTo(LIST).list)
+    } else if (datum.executable()) {
+        Either.left(datum)
+    } else throw MishapInvalidIota(
+        datum,
+        reverseIdx,
+        "hexcasting.mishap.invalid_value.evaluatable".asTranslatedComponent
+    )
 
 fun Iota?.orNull() = this ?: NullIota()
 
@@ -290,10 +290,10 @@ fun Iota?.orNull() = this ?: NullIota()
 // there should probably be some way to abstract function application over lists, vecs, and numbers,
 // and i bet it's fucking monads
 fun aplKinnie(operatee: Either<Double, Vec3>, fn: DoubleUnaryOperator): Iota =
-        operatee.map(
-                { num -> DoubleIota(fn.applyAsDouble(num)) },
-                { vec -> Vec3Iota(Vec3(fn.applyAsDouble(vec.x), fn.applyAsDouble(vec.y), fn.applyAsDouble(vec.z))) }
-        )
+    operatee.map(
+        { num -> DoubleIota(fn.applyAsDouble(num)) },
+        { vec -> Vec3Iota(Vec3(fn.applyAsDouble(vec.x), fn.applyAsDouble(vec.y), fn.applyAsDouble(vec.z))) }
+    )
 
 inline val Boolean.asActionResult get() = listOf(BooleanIota(this))
 inline val Double.asActionResult get() = listOf(DoubleIota(this))

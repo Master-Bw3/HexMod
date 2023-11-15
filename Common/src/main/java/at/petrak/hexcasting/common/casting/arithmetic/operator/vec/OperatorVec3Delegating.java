@@ -24,37 +24,38 @@ import static at.petrak.hexcasting.common.lib.hex.HexIotaTypes.DOUBLE;
 import static at.petrak.hexcasting.common.lib.hex.HexIotaTypes.VEC3;
 
 public class OperatorVec3Delegating extends Operator {
-	private final BiFunction<Vec3, Vec3, Iota> op;
-	private final Operator fb;
-	public OperatorVec3Delegating(BiFunction<Vec3, Vec3, Iota> core, HexPattern fallback) {
-		super(2, IotaMultiPredicate.any(IotaPredicate.ofType(VEC3), IotaPredicate.ofType(DOUBLE)));
-		op = core;
-		fb = Objects.requireNonNull(DoubleArithmetic.INSTANCE.getOperator(fallback));
-	}
+    private final BiFunction<Vec3, Vec3, Iota> op;
+    private final Operator fb;
 
-	@Override
-	public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) throws Mishap {
-		var it = iotas.iterator();
-		var left = it.next();
-		var right = it.next();
-		try {
-			if (op != null && left instanceof Vec3Iota lh && right instanceof Vec3Iota rh) {
-				return List.of(op.apply(lh.getVec3(), rh.getVec3()));
-			}
-			var lh = left instanceof Vec3Iota l ? l.getVec3() : triplicate(left.castTo(DOUBLE).getDouble());
-			var rh = right instanceof Vec3Iota r ? r.getVec3() : triplicate(right.castTo(DOUBLE).getDouble());
-			return new TripleIterable<>(
-					fb.apply(new IterPair<>(new DoubleIota(lh.x()), new DoubleIota(rh.x())), env),
-					fb.apply(new IterPair<>(new DoubleIota(lh.y()), new DoubleIota(rh.y())), env),
-					fb.apply(new IterPair<>(new DoubleIota(lh.z()), new DoubleIota(rh.z())), env),
-					(x, y, z) -> new Vec3Iota(new Vec3(x.castTo(DOUBLE).getDouble(), x.castTo(DOUBLE).getDouble(), z.castTo(DOUBLE).getDouble()))
-			);
-		} catch (MishapDivideByZero e) {
-			throw MishapDivideByZero.of(left, right, e.getSuffix());
-		}
-	}
+    public OperatorVec3Delegating(BiFunction<Vec3, Vec3, Iota> core, HexPattern fallback) {
+        super(2, IotaMultiPredicate.any(IotaPredicate.ofType(VEC3), IotaPredicate.ofType(DOUBLE)));
+        op = core;
+        fb = Objects.requireNonNull(DoubleArithmetic.INSTANCE.getOperator(fallback));
+    }
 
-	public static Vec3 triplicate(double in) {
-		return new Vec3(in, in, in);
-	}
+    @Override
+    public @NotNull Iterable<Iota> apply(@NotNull Iterable<Iota> iotas, @NotNull CastingEnvironment env) throws Mishap {
+        var it = iotas.iterator();
+        var left = it.next();
+        var right = it.next();
+        try {
+            if (op != null && left instanceof Vec3Iota lh && right instanceof Vec3Iota rh) {
+                return List.of(op.apply(lh.getVec3(), rh.getVec3()));
+            }
+            var lh = left instanceof Vec3Iota l ? l.getVec3() : triplicate(left.castTo(DOUBLE).getDouble());
+            var rh = right instanceof Vec3Iota r ? r.getVec3() : triplicate(right.castTo(DOUBLE).getDouble());
+            return new TripleIterable<>(
+                    fb.apply(new IterPair<>(new DoubleIota(lh.x()), new DoubleIota(rh.x())), env),
+                    fb.apply(new IterPair<>(new DoubleIota(lh.y()), new DoubleIota(rh.y())), env),
+                    fb.apply(new IterPair<>(new DoubleIota(lh.z()), new DoubleIota(rh.z())), env),
+                    (x, y, z) -> new Vec3Iota(new Vec3(x.castTo(DOUBLE).getDouble(), x.castTo(DOUBLE).getDouble(), z.castTo(DOUBLE).getDouble()))
+            );
+        } catch (MishapDivideByZero e) {
+            throw MishapDivideByZero.of(left, right, e.getSuffix());
+        }
+    }
+
+    public static Vec3 triplicate(double in) {
+        return new Vec3(in, in, in);
+    }
 }
