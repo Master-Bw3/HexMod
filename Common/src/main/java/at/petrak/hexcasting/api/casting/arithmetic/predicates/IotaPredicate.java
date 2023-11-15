@@ -57,7 +57,7 @@ public interface IotaPredicate {
 	record OfType(IotaType<?> type) implements IotaPredicate {
 		@Override
 		public boolean test(Iota iota) {
-			return iota.getType().equals(this.type);
+			return iota.isCastableTo(this.type);
 		}
 	}
 
