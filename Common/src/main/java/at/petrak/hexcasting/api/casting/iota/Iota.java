@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Iota {
@@ -25,9 +26,29 @@ public abstract class Iota {
     @NotNull
     protected final IotaType<?> type;
 
+    @NotNull
+    protected final List<IotaType<?>> castableTypes;
+
     protected Iota(@NotNull IotaType<?> type, @NotNull Object payload) {
         this.type = type;
         this.payload = payload;
+        this.castableTypes = List.of(type);
+    }
+
+    protected Iota(@NotNull IotaType<?> type, @NotNull List<IotaType<?>> castableTypes, @NotNull Object payload ) {
+        this.type = type;
+        this.castableTypes = castableTypes;
+        this.payload = payload;
+    }
+
+    public boolean castableTo(IotaType<?> iotaType) {
+        return castableTypes.contains(iotaType);
+    }
+
+    public <T extends Iota> T castTo(IotaType<T> iotaType) {
+        if (this.getType() != iotaType)
+            throw new IllegalStateException("Attempting to downcast " + this + " to type: " + iotaType);
+        return (T) this;
     }
 
     public @NotNull IotaType<?> getType() {
