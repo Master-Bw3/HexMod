@@ -12,6 +12,7 @@ import at.petrak.hexcasting.api.casting.iota.BooleanIota
 import at.petrak.hexcasting.api.casting.iota.DoubleIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.math.HexPattern
+import at.petrak.hexcasting.common.casting.arithmetic.operator.castTo
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes.*
 import it.unimi.dsi.fastutil.booleans.BooleanBinaryOperator
 import it.unimi.dsi.fastutil.booleans.BooleanUnaryOperator

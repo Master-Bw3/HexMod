@@ -14,6 +14,7 @@ import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.MishapDivideByZero
 import at.petrak.hexcasting.common.casting.arithmetic.operator.OperatorLog
 import at.petrak.hexcasting.common.casting.arithmetic.operator.asDoubleBetween
+import at.petrak.hexcasting.common.casting.arithmetic.operator.castTo
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes.*
 import java.util.function.DoubleBinaryOperator

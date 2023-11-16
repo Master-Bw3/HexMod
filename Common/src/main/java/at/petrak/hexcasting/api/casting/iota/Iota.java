@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Iota {
     @NotNull
@@ -32,21 +33,15 @@ public abstract class Iota {
     }
 
     /**
-     * Returns whether it is possible to cast this iota to the provided iota type.
-     */
-    public boolean isCastableTo(IotaType<?> iotaType) {
-        return this.getType() == iotaType;
-    }
-
-
-    /**
      * Attempts to cast this iota to the provided iota type.
      */
-    public <T extends Iota> T castTo(IotaType<T> iotaType) {
+    public <T extends Iota> Optional<T> tryCastTo(IotaType<T> iotaType) {
         if (this.getType() != iotaType)
-            throw new IllegalStateException("Attempting to downcast " + this + " to type: " + iotaType);
-        return (T) this;
+            return Optional.empty();
+        else
+            return Optional.of((T) this);
     }
+    
 
     public @NotNull IotaType<?> getType() {
         return this.type;
@@ -72,17 +67,17 @@ public abstract class Iota {
      */
     public @NotNull CastResult execute(CastingVM vm, ServerLevel world, SpellContinuation continuation) {
         return new CastResult(
-            this,
-            continuation,
-            null,  // Should never matter
-            List.of(
-                new OperatorSideEffect.DoMishap(
-                    new MishapUnescapedValue(this),
-                    new Mishap.Context(new HexPattern(HexDir.WEST, List.of()), null)
-                )
-            ),
-            ResolvedPatternType.INVALID,
-            HexEvalSounds.MISHAP);
+                this,
+                continuation,
+                null,  // Should never matter
+                List.of(
+                        new OperatorSideEffect.DoMishap(
+                                new MishapUnescapedValue(this),
+                                new Mishap.Context(new HexPattern(HexDir.WEST, List.of()), null)
+                        )
+                ),
+                ResolvedPatternType.INVALID,
+                HexEvalSounds.MISHAP);
     }
 
     /**

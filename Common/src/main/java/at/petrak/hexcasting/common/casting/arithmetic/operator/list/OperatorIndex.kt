@@ -6,6 +6,7 @@ import at.petrak.hexcasting.api.casting.arithmetic.operator.Operator
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.NullIota
+import at.petrak.hexcasting.common.casting.arithmetic.operator.castTo
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes.*
 import kotlin.math.roundToInt
 

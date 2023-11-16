@@ -3,6 +3,7 @@ package at.petrak.hexcasting.common.casting.arithmetic.operator
 import at.petrak.hexcasting.api.casting.SpellList
 import at.petrak.hexcasting.api.casting.iota.DoubleIota
 import at.petrak.hexcasting.api.casting.iota.Iota
+import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import kotlin.math.abs
@@ -57,6 +58,10 @@ fun Iterator<IndexedValue<Iota>>.nextPositiveIntUnderInclusive(max: Int, argc: I
         }
     }
     throw MishapInvalidIota.of(x, if (argc == 0) idx else argc - (idx + 1), "int.positive.less.equal", max)
+}
+
+fun <T: Iota> Iota.castTo(iotaType: IotaType<T>): T {
+    return this.tryCastTo(iotaType).orElseGet {throw IllegalStateException("Attempting to downcast " + this + " to type: " + iotaType)}
 }
 
 /**

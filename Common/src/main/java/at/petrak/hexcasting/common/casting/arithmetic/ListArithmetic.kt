@@ -14,6 +14,7 @@ import at.petrak.hexcasting.api.casting.iota.DoubleIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
+import at.petrak.hexcasting.common.casting.arithmetic.operator.castTo
 import at.petrak.hexcasting.common.casting.arithmetic.operator.list.*
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes.LIST
 import java.util.function.BinaryOperator

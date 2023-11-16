@@ -1,5 +1,4 @@
 @file:JvmName("HexUtils")
-
 package at.petrak.hexcasting.api.utils
 
 import at.petrak.hexcasting.api.casting.iota.Iota
