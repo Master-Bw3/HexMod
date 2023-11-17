@@ -3,6 +3,7 @@ package at.petrak.hexcasting.common.casting.arithmetic.operator.vec
 import at.petrak.hexcasting.api.casting.arithmetic.IterPair
 import at.petrak.hexcasting.api.casting.arithmetic.TripleIterable
 import at.petrak.hexcasting.api.casting.arithmetic.operator.Operator
+import at.petrak.hexcasting.api.casting.arithmetic.operator.OperatorBasic
 import at.petrak.hexcasting.api.casting.arithmetic.predicates.IotaMultiPredicate
 import at.petrak.hexcasting.api.casting.arithmetic.predicates.IotaPredicate
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
@@ -22,18 +23,18 @@ import java.util.function.BiFunction
 import kotlin.collections.Iterable
 
 class OperatorVec3Delegating(private val op: BiFunction<Vec3, Vec3, Iota>?, fallback: HexPattern?) :
-    Operator(
+    OperatorBasic(
         2,
         IotaMultiPredicate.any(IotaPredicate.ofType(HexIotaTypes.VEC3), IotaPredicate.ofType(HexIotaTypes.DOUBLE))
     ) {
-    private val fb: Operator
+    private val fb: OperatorBasic
 
     init {
         fb = Objects.requireNonNull(
             getOperator(
                 fallback!!
             )
-        )
+        ) as OperatorBasic
     }
 
     @Throws(Mishap::class)
